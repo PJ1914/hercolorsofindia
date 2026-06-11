@@ -1,0 +1,27 @@
+import "server-only";
+import * as admin from "firebase-admin";
+
+const formatPrivateKey = (key: string) => {
+  return key.replace(/\\n/g, "\n");
+};
+
+if (!admin.apps.length) {
+  try {
+    admin.initializeApp({
+      credential: admin.credential.cert({
+        projectId: process.env.FIREBASE_PROJECT_ID,
+        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+        privateKey: process.env.FIREBASE_PRIVATE_KEY
+          ? formatPrivateKey(process.env.FIREBASE_PRIVATE_KEY)
+          : undefined,
+      }),
+      storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    });
+  } catch (error) {
+    console.error("Firebase admin initialization error", error);
+  }
+}
+
+export const adminDb = admin.firestore();
+export const adminAuth = admin.auth();
+export const adminStorage = admin.storage();
