@@ -9,11 +9,11 @@ async function getDashboardStats() {
     const inquiriesSnap = await adminDb.collection("inquiries").get();
 
     const totalProducts = productsSnap.size;
-    const publishedProducts = productsSnap.docs.filter((doc) => doc.data().status === "published").length;
+    const publishedProducts = productsSnap.docs.filter((doc: any) => doc.data().status === "published").length;
     const draftProducts = totalProducts - publishedProducts;
 
     const totalInquiries = inquiriesSnap.size;
-    const pendingInquiries = inquiriesSnap.docs.filter((doc) => doc.data().status === "New").length;
+    const pendingInquiries = inquiriesSnap.docs.filter((doc: any) => doc.data().status === "New").length;
 
     return {
       totalProducts,

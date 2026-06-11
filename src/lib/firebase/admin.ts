@@ -26,12 +26,12 @@ if (!admin.apps.length) {
 
 // During Vercel build phase, env vars might be missing.
 // We export null or dummy objects so the module evaluation doesn't crash.
-export const adminDb = admin.apps.length ? admin.firestore() : {
+export const adminDb = (admin.apps.length ? admin.firestore() : {
   collection: () => ({
     get: async () => ({ size: 0, docs: [] }),
     add: async () => ({ id: "mock-id" })
   })
-} as any;
+}) as unknown as admin.firestore.Firestore;
 
-export const adminAuth = admin.apps.length ? admin.auth() : {} as any;
-export const adminStorage = admin.apps.length ? admin.storage() : {} as any;
+export const adminAuth = (admin.apps.length ? admin.auth() : {}) as unknown as admin.auth.Auth;
+export const adminStorage = (admin.apps.length ? admin.storage() : {}) as unknown as admin.storage.Storage;
